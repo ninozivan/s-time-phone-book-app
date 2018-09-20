@@ -38,69 +38,74 @@
     <button class="c-footer-fab-button btn btn-primary btn-lg" (click)="openAddNewContact()"><fa name="plus"></fa></button>
   </div>
 </footer>
-<!-- Custom Contact Details modal -->
+<!-- Custom Contact Details modal (will be open when we want to edit/view Contact details) -->
 <custom-modal id="cid-contact-details-modal" class="c-modal-container">
   <div class="c-custom-modal-wrapper">
-    <div class="c-nav-block c-as-header bg-primary">
-      <div class="c-container">
-        <div class="c-view-title"><b>Contact Details</b></div>
-      </div>
-    </div>
-    <div class="c-container c-main-container">
-      <div class="card">
-        <div class="card-header">
-          <div>Name: <b *ngIf="formFirstName">{{formFirstName}}</b><b *ngIf="formLastName">, {{formLastName}}</b></div>
-        </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" [(ngModel)]="formFirstName" placeholder="Enter name">
+    <form (ngSubmit)="saveContactChanges()" #f="ngForm">
+        <div class="c-nav-block c-as-header bg-primary">
+            <div class="c-container">
+              <div class="c-view-title"><b>Contact Details</b></div>
+            </div>
+          </div>    
+        <div class="c-container c-main-container">
+          <div class="card">
+            <div class="card-header">
+              <div>Name: <b *ngIf="formModel.firstName">{{formModel.firstName}}</b><b *ngIf="formModel.lastName">, {{formModel.lastName}}</b></div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="firstName">First Name*</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" #firstNameRef="ngModel" [(ngModel)]="formModel.firstName" placeholder="Enter name" required>
+                    <span class="small text-danger" *ngIf="!firstNameRef.valid && firstNameRef.touched">First Name is required</span>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="formModel.lastName" placeholder="Enter last name">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="emailAddress">Email address</label>
+                    <input type="email" class="form-control" id="emailAddress" name="emailAddress" #emailRef="ngModel" email [(ngModel)]="formModel.email" placeholder="Enter email">
+                    <span class="small text-danger" *ngIf="!emailRef.valid && emailRef.touched">Enter valid email address</span>
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="phoneNumber">Phone number*</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" #phoneRef="ngModel" [(ngModel)]="formModel.phone" placeholder="Enter phone" required>
+                    <span class="small text-danger" *ngIf="!phoneRef.valid && phoneRef.touched">Phone number is required</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="col-12 col-md-6">
-              <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" [(ngModel)]="formLastName" placeholder="Enter last name">
+            <div class="card-footer">
+              <small class="form-text text-muted">* Required fields</small>
+            </div>
+          </div>
+        </div>
+        <div class="c-nav-block c-as-footer">
+          <div class="c-container">
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-block btn-success" type="submit" [disabled]="!f.valid">Save</button>
+              </div>
+              <div class="col">
+                <button class="btn btn-block btn-primary" (click)="cancelContactChanges()">Discard</button>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <div class="form-group">
-                <label for="emailAddress">Email address</label>
-                <input type="email" class="form-control" id="emailAddress" [(ngModel)]="formEmailAddress" placeholder="Enter email">
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="form-group">
-                <label for="phoneNumber">Phone number</label>
-                <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="formPhoneNumber" placeholder="Enter phone">
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="card-footer">
-          <small class="form-text text-muted">You can edit contact information by changing values in form fields</small>
-        </div>
-      </div>
-    </div>
-    <div class="c-nav-block c-as-footer">
-      <div class="c-container">
-        <div class="row">
-          <div class="col">
-            <button class="btn btn-block btn-success" (click)="saveContactChanges()">Save</button>
-          </div>
-          <div class="col">
-            <button class="btn btn-block btn-primary" (click)="cancelContactChanges()">Discard</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </custom-modal>
-<!-- Custom Delete Contact modal -->
+<!-- Custom Delete Contact modal (will be open when we want to confirm deletion Contact) -->
 <custom-modal id="cid-contact-delete-modal" class="c-modal-container">
   <div class="c-custom-modal-wrapper">
     <div class="c-nav-block c-as-header bg-danger">
@@ -119,22 +124,22 @@
               <tr>
                 <td>First Name:</td>
                 <td><b>{{selectedContactToDelete && selectedContactToDelete.firstName ? selectedContactToDelete.firstName:
-                    ''}}
+                    '/'}}
                   </b></td>
               </tr>
               <tr>
                 <td>Last Name</td>
                 <td><b>{{selectedContactToDelete && selectedContactToDelete.lastName ? selectedContactToDelete.lastName:
-                    ''}}
+                    '/'}}
                   </b></td>
               </tr>
               <tr>
                 <td>Phone Number</td>
-                <td><b>{{selectedContactToDelete && selectedContactToDelete.phone ? selectedContactToDelete.phone: ''}}</b></td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.phone ? selectedContactToDelete.phone: '/'}}</b></td>
               </tr>
               <tr>
                 <td>Email Address</td>
-                <td><b>{{selectedContactToDelete && selectedContactToDelete.email ? selectedContactToDelete.email: ''}}</b></td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.email ? selectedContactToDelete.email: '/'}}</b></td>
               </tr>
             </tbody>
           </table>

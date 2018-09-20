@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {Router} from "@angular/router";
 import { AngularFireDatabase } from 'angularfire2/database';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-add-new-contact',
@@ -8,20 +9,22 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./add-new-contact.component.css']
 })
 export class AddNewContactComponent implements OnInit {
-  formFirstName: string;//form value of firstName input
-  formLastName: string;//form value of lastName input
-  formPhoneNumber: string;//form value of phoneNumber input
-  formEmailAddress: string;//form value of emailAddress input
+  @ViewChild('f') newContactForm: NgForm;
+  //Form model for storing user inputs {firstName, lastName, phone, email}
+  formModel: any = {};
   constructor(private router: Router, public db: AngularFireDatabase) { }
   //called when we want to save changes
   saveChanges() {
-    var newContact = {
-      firstName: this.formFirstName ? this.formFirstName : '',
-      lastName: this.formLastName ? this.formLastName : '',
-      phone: this.formPhoneNumber ? this.formPhoneNumber : '',
-      email: this.formEmailAddress ? this.formEmailAddress : ''
+    if (!this.newContactForm.valid){
+      return
     }
-    //
+    var newContact = {
+      firstName: this.formModel.firstName ? this.formModel.firstName : '',
+      lastName: this.formModel.lastName ? this.formModel.lastName : '',
+      phone: this.formModel.phone ? this.formModel.phone : '',
+      email: this.formModel.email ? this.formModel.email : ''
+    }
+    //create reference to Firebase database in order to add new contact item
     const itemsRef = this.db.list('all-contacts');
     //create new contact object in database
     itemsRef.push(newContact).then((item) => { 
@@ -31,7 +34,6 @@ export class AddNewContactComponent implements OnInit {
         this.router.navigate(['/contacts-list']);
       });
     });
-    
   }
   //cancel changes
   cancelChanges() {
@@ -40,8 +42,9 @@ export class AddNewContactComponent implements OnInit {
 
   ngOnInit() {
 
+  }
 
-       
+  ngAfterViewInit(){ 
   }
 
 }
