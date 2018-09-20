@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 import { ModalService } from '../services';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-all-contacts-list',
@@ -10,6 +11,8 @@ import { ModalService } from '../services';
   styleUrls: ['./all-contacts-list.component.css']
 })
 export class AllContactsListComponent implements OnInit {
+  @ViewChild('f') contactDetailsForm: NgForm;
+  isLoading: boolean = true;
   //id of modal that will be open when we want to view or update contact
   modal_contactDetails_id: string = "cid-contact-details-modal";
   //id of modal that will be open when we want to confirm contact deletion
@@ -20,23 +23,21 @@ export class AllContactsListComponent implements OnInit {
   selectedContactToEdit: any;  
   //List of all contacts to who on view
   listOfAllContacts: Observable<any[]>;
-  formFirstName: string;//form value of firstName input (cid-contact-details-modal)
-  formLastName: string;//form value of lastName input (cid-contact-details-modal)
-  formPhoneNumber: string;//form value of phoneNumber input (cid-contact-details-modal)
-  formEmailAddress: string;//form value of emailAddress input (cid-contact-details-modal)
+  //Form model for storing user inputs {firstName, lastName, phone, email}
+  formModel: any = {};
 
   constructor(public db: AngularFireDatabase, private router: Router, private modalService: ModalService) {
-    //get all contacts from database
+    //get all contacts from database (fetch from Firebase database)
     this.listOfAllContacts = db.list('all-contacts').valueChanges();
   }
   //When single Contact is selected from list of all contacts
   openContactDetailsModal(inputSelectedContact) {
     if (inputSelectedContact && inputSelectedContact.id) {
       this.selectedContactToEdit = inputSelectedContact;
-      this.formFirstName = inputSelectedContact.firstName ? inputSelectedContact.firstName : '';
-      this.formLastName = inputSelectedContact.lastName ? inputSelectedContact.lastName : '';
-      this.formPhoneNumber = inputSelectedContact.phone ? inputSelectedContact.phone : '';
-      this.formEmailAddress = inputSelectedContact.email ? inputSelectedContact.email : '';
+      this.formModel.firstName = inputSelectedContact.firstName ? inputSelectedContact.firstName : '';
+      this.formModel.lastName = inputSelectedContact.lastName ? inputSelectedContact.lastName : '';
+      this.formModel.phone = inputSelectedContact.phone ? inputSelectedContact.phone : '';
+      this.formModel.email = inputSelectedContact.email ? inputSelectedContact.email : '';
       //
       this.modalService.open(this.modal_contactDetails_id);
     }
@@ -47,21 +48,22 @@ export class AllContactsListComponent implements OnInit {
   }
   //Contact Details Modal
   saveContactChanges() {
-    if (true){
-      var updatedData = {
-        firstName: this.formFirstName ? this.formFirstName : '',
-        lastName: this.formLastName ? this.formLastName : '',
-        phone: this.formPhoneNumber ? this.formPhoneNumber : '',
-        email: this.formEmailAddress ? this.formEmailAddress : ''
-      }
-      //
-      const itemsRef = this.db.list('all-contacts');
-      //create new contact object in database
-      itemsRef.update(this.selectedContactToEdit.id, updatedData).then((item) => { 
-        //then close modal
-        this.modalService.close(this.modal_contactDetails_id);
-      });      
+    if (!this.contactDetailsForm.valid){
+      return
     }    
+    var updatedData = {
+      firstName: this.formModel.firstName ? this.formModel.firstName : '',
+      lastName: this.formModel.lastName ? this.formModel.lastName : '',
+      phone: this.formModel.phone ? this.formModel.phone : '',
+      email: this.formModel.email ? this.formModel.email : ''
+    }
+    //set reference to Firebase database
+    const itemsRef = this.db.list('all-contacts');
+    //create new contact object in database
+    itemsRef.update(this.selectedContactToEdit.id, updatedData).then((item) => { 
+      //then close modal
+      this.modalService.close(this.modal_contactDetails_id);
+    });   
   }
   //Delete Contact from list of all contacts
   openContactDeleteModal(inputItemId){
@@ -76,6 +78,7 @@ export class AllContactsListComponent implements OnInit {
   }
   //Confirm Contact Remove Modal
   confirmContactDelete(){
+    //remove contact item in Firebase database
     const promise = this.db.list('all-contacts').remove(this.selectedContactToDelete.id);
     promise.then(_ => {
       this.modalService.close(this.modal_deleteContact_id);
@@ -89,6 +92,6 @@ export class AllContactsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.bodyText = 'This text can be updated in modal 1';
+    
   }
 }

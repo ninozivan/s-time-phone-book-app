@@ -3,52 +3,64 @@
     <div class="c-view-title"><b>Add new contact</b></div>
   </div>
 </header>
-<main class="c-container c-main-container">
-  <div class="card">
-    <div class="card-header">
-      In order to create new contact, please fill in the form and then confirm by clicking "Save" button.
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" class="form-control" id="firstName" [(ngModel)]="formFirstName" placeholder="Enter name">
-          </div>
-        </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" class="form-control" id="lastName" [(ngModel)]="formLastName" placeholder="Enter last name">
-          </div>
-        </div>
+<form (ngSubmit)="saveChanges()" #f="ngForm">
+  <main class="c-container c-main-container">
+    <div class="card">
+      <div class="card-header">
+        In order to create new contact, please fill in the form and then confirm by clicking "Save" button.
       </div>
-      <div class="row">
+      <div class="card-body">
+        <div class="row">
           <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="emailAddress">Email address</label>
-            <input type="email" class="form-control" id="emailAddress" [(ngModel)]="formEmailAddress" placeholder="Enter email">
+            <div class="form-group">
+              <label for="firstName">First Name*</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" #firstNameRef="ngModel" [(ngModel)]="formModel.firstName"
+                placeholder="Enter name" required>
+              <span class="small text-danger" *ngIf="!firstNameRef.valid && firstNameRef.touched">First
+                Name is required</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="formModel.lastName" placeholder="Enter last name">
+            </div>
           </div>
         </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="phoneNumber">Phone number</label>
-            <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="formPhoneNumber" placeholder="Enter phone">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="emailAddress">Email address</label>
+              <input type="email" class="form-control" id="emailAddress" name="emailAddress" #emailRef="ngModel" email [(ngModel)]="formModel.email"
+                placeholder="Enter email">
+              <span class="small text-danger" *ngIf="!emailRef.valid && emailRef.touched">Enter valid email address</span>
+            </div>
           </div>
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="phoneNumber">Phone number*</label>
+              <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" #phoneRef="ngModel" [(ngModel)]="formModel.phone"
+                placeholder="Enter phone" required>
+              <span class="small text-danger" *ngIf="!phoneRef.valid && phoneRef.touched">Phone number is required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <small class="form-text text-muted">* Required fields</small>
+      </div>
+    </div>
+  </main>
+  <footer class="c-nav-block c-as-footer">
+    <div class="c-container">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-block btn-success" type="submit" [disabled]="!f.valid">Save</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-block btn-primary" (click)="cancelChanges()">Cancel</button>
         </div>
       </div>
     </div>
-  </div>
-</main>
-<footer class="c-nav-block c-as-footer">
-  <div class="c-container">
-    <div class="row">
-      <div class="col">
-        <button class="btn btn-block btn-success" (click)="saveChanges()">Save</button>
-      </div>
-      <div class="col">
-        <button class="btn btn-block btn-primary" (click)="cancelChanges()">Cancel</button>
-      </div>
-    </div>
-  </div>
-</footer>
+  </footer>
+</form>

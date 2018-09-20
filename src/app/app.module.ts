@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 //Forms
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //Application Components
 import { AppComponent } from './app.component';
 import { AllContactsListComponent } from './all-contacts-list/all-contacts-list.component';
@@ -32,6 +32,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     AppRoutingModule,    
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFontAwesomeModule
