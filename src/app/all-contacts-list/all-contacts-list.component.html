@@ -1,3 +1,107 @@
-<p>
-  all-contacts-list works!
-</p>
+<header class="c-nav-block c-as-header">
+  <div class="c-container">
+    <div class="c-view-title">List of all contacts</div>
+  </div>
+</header>
+<main class="c-container c-main-container">
+  <div class="card" class="c-contacts-list-item" *ngFor="let singleContact of listOfAllContacts | async">
+    <div class="card-body">
+      {{singleContact.lastName}} {{singleContact.firstName}}
+      <button class="btn btn-danger" (click)="openContactDeleteModal(singleContact)">Remove</button>
+      <button class="btn btn-primary" (click)="openContactDetailsModal(singleContact)">Edit</button>
+    </div>
+  </div>
+</main>
+<footer class="c-nav-block c-as-footer c-no-background">
+  <div class="c-container">
+    <button class="c-footer-fab-button btn btn-primary" (click)="openAddNewContact()">Add</button>
+  </div>
+</footer>
+<!-- Custom Contact Details modal -->
+<custom-modal id="cid-contact-details-modal" class="c-modal-container">
+  <div class="c-custom-modal-wrapper">
+    <div class="c-nav-block c-as-header">
+      <div class="c-container">
+        <div class="c-view-title">Contact Details</div>
+      </div>
+    </div>
+    <div class="c-container c-main-container">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" [(ngModel)]="formFirstName" placeholder="Enter name">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" [(ngModel)]="formLastName" placeholder="Enter last name">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="emailAddress">Email address</label>
+                <input type="email" class="form-control" id="emailAddress" [(ngModel)]="formEmailAddress" placeholder="Enter email">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="phoneNumber">Phone number</label>
+                <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="formPhoneNumber" placeholder="Enter phone">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="c-nav-block c-as-footer">
+      <div class="c-container">
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-block btn-primary" (click)="saveContactChanges()">Save</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-danger" (click)="cancelContactChanges()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</custom-modal>
+<!-- Custom Delete Contact modal -->
+<custom-modal id="cid-contact-delete-modal" class="c-modal-container">
+    <div class="c-custom-modal-wrapper">
+      <div class="c-nav-block c-as-header">
+        <div class="c-container">
+          <div class="c-view-title">Delete Contact</div>
+        </div>
+      </div>
+      <div class="c-container c-main-container">
+        <div class="card">
+          <div class="card-body">
+            <h1>Are you sure that you want to delete</h1>
+            <p>Contact:</p>
+            <p>First Name: {{selectedContactToDelete && selectedContactToDelete.firstName ? selectedContactToDelete.firstName : 'Unknown'}}</p>
+            <p>Last Name: {{selectedContactToDelete && selectedContactToDelete.lastName ? selectedContactToDelete.lastName : 'Unknown'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="c-nav-block c-as-footer">
+        <div class="c-container">
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-block btn-primary" (click)="confirmContactDelete()">Save</button>
+            </div>
+            <div class="col">
+              <button class="btn btn-block btn-danger" (click)="cancelContactDelete()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </custom-modal>

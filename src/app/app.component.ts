@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 's-time-phone-book-app';
+  itemValue = '';
+ 
+  // onSubmit() {
+  //   this.db.list('/items').push({ content: this.itemValue });
+  //   this.itemValue = '';
+  // }  
 }

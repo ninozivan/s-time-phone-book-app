@@ -1,3 +1,51 @@
-<p>
-  add-new-contact works!
-</p>
+<header class="c-nav-block c-as-header">
+  <div class="c-container">
+    <div class="c-view-title">Add new contact</div>
+  </div>
+</header>
+<main class="c-container c-main-container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" [(ngModel)]="formFirstName" placeholder="Enter name">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" [(ngModel)]="formLastName" placeholder="Enter last name">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="emailAddress">Email address</label>
+            <input type="email" class="form-control" id="emailAddress" [(ngModel)]="formEmailAddress" placeholder="Enter email">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="phoneNumber">Phone number</label>
+            <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="formPhoneNumber" placeholder="Enter phone">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="c-nav-block c-as-footer">
+  <div class="c-container">
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-block btn-primary" (click)="saveChanges()">Save</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-block btn-danger" (click)="cancelChanges()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</footer>

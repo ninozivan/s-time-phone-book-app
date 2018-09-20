@@ -1,0 +1,197 @@
+/* You can add global styles to this file, and also import other style files */
+/* NORMALIZE CSS */
+html {font-family: sans-serif;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;}
+body { margin: 0 }
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {display: block;}
+audio,canvas,progress,video {display: inline-block;vertical-align: baseline;}
+a {
+    background: transparent;
+    &:active,&:hover {outline: 0;}
+}
+b, strong {font-weight: bold;}
+h1 {font-size: 2em;margin: 0.67em 0;}
+img { border: 0; }  
+svg:not(:root) { overflow: hidden; }
+hr {-moz-box-sizing: content-box;box-sizing: content-box;height: 0;}
+button,input,select,textarea {color: inherit;font: inherit;margin: 0;}
+button { overflow: visible;}
+button,select {text-transform: none;}
+button,html input[type="button"] {-webkit-appearance: button;cursor: pointer;}
+button[disabled],html input[disabled] {cursor: default;}
+button input {&::-moz-focus-inner {border: 0;padding: 0;}}
+input {
+    line-height: normal;
+    &[type="reset"],&[type="submit"] {-webkit-appearance: button;cursor: pointer;}
+    &[type="checkbox"],&[type="radio"] {box-sizing: border-box;padding: 0;}
+    &[type="number"] {&::-webkit-inner-spin-button,&::-webkit-outer-spin-button {height: auto;}}
+    &[type="search"] {
+        -webkit-appearance: textfield;-moz-box-sizing: content-box;-webkit-box-sizing: content-box;box-sizing: content-box;
+        &::-webkit-search-cancel-button,&::-webkit-search-decoration {-webkit-appearance: none;}
+    }
+
+}
+textarea { overflow: auto; }
+table {border-collapse: collapse;border-spacing: 0;}
+td,th {padding: 0;}
+//COLORS
+@color-white:#fff;
+@color-black:#000;
+@color-material-red:#F44336;
+@color-material-purple:#9C27B0;
+@color-material-deep-purple:#673AB7;
+@color-material-indigo:#3F51B5;
+@color-material-blue:#2196F3;
+@color-material-green:#4CAF50;
+//MIXINS
+.mx-clear-fix(){
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+//RESPONSIVE
+@var-breakpoint-start-zero:0px;
+@var-breakpoint-end-xs:575px;
+@var-breakpoint-start-sm:576px;
+@var-breakpoint-end-sm:767px;
+@var-breakpoint-start-md:768px;
+@var-breakpoint-end-md:991px;
+@var-breakpoint-start-lg:992px;
+@var-breakpoint-end-lg:1199px;
+@var-breakpoint-start-xlg:1200px;
+//
+@var-z-index-highest:999;
+@var-z-index-modals:99999;
+body{
+    //background-color: #f00;
+}
+.c-container{
+    display: block;
+    width: 100%;
+    max-width: @var-breakpoint-start-md;
+    margin: 0 auto;
+    z-index: 0;
+    position: relative;
+    .mx-clear-fix();
+    &.c-main-container{
+        padding: 70px 0 0;
+    }
+}
+//Top header
+.c-nav-block{
+    display: block;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: @color-white;
+    &.c-as-header{
+        top: 0;
+        bottom: auto;
+        z-index: @var-z-index-highest;
+    }
+    &.c-as-footer{
+        top: auto;
+        bottom: 0;
+        z-index: @var-z-index-highest;
+        &.c-no-background{
+            background-color: fade(@color-white, 0%);
+        }
+    }
+}
+.c-view-title{
+    text-align: center;
+    font-size: 16px;
+    color: @color-material-blue;
+    padding: 20px 0;
+}
+///List of all contacts
+.c-contacts-list-item{
+    margin-bottom: 5px;
+    position: relative;
+    > .mat-icon-button{
+        position: absolute;
+        right: 10px;
+        top: 14px;
+        left: auto;
+        bottom: auto;
+    }
+}
+.c-footer-fab-button{
+    position: absolute !important;
+    left: auto !important;
+    right: 10px !important;
+    bottom: 30px !important;
+}
+.c-block-button{
+    width: 100% !important;
+}
+
+
+
+/* MODAL STYLES */
+.c-modal-container{
+    display: none;
+    .c-custom-modal-wrapper{
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        background-color: fade(@color-black, 80%);
+        z-index: @var-z-index-modals;
+    }
+}
+body.modal-open {
+    /* body overflow is hidden to hide main scrollbar when modal window is open */
+    overflow: hidden;
+}
+custom-modal {
+    /* modals are hidden by default */
+    // display: none;
+
+    // .modal {
+    //     /* modal container fixed across whole screen */
+    //     position: fixed;
+    //     top: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     left: 0;
+
+    //     /* z-index must be higher than .modal-background */
+    //     z-index: @var-z-index-modals;
+        
+    //     /* enables scrolling for tall modals */
+    //     overflow: auto;
+
+    //     .modal-body {
+    //         padding: 20px;
+    //         background: #fff;
+
+    //         /* margin exposes part of the modal background */
+    //         margin: 40px;
+    //     }
+    // }
+
+    // .modal-background {
+    //     /* modal background fixed across whole screen */
+    //     position: fixed;
+    //     top: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     left: 0;
+
+    //     /* semi-transparent black  */
+    //     background-color: #000;
+    //     opacity: 0.75;
+        
+    //     /* z-index must be below .modal and above everything else  */
+    //     z-index: @var-z-index-modals - 10;
+    // }
+}
+
+
