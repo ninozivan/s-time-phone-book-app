@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { AllContactsListComponent } from './all-contacts-list/all-contacts-list.component';
 import { AddNewContactComponent } from './add-new-contact/add-new-contact.component';
 import { LoginComponent } from './login/login.component';
-import { SingleContactDetailsComponent } from './single-contact-details/single-contact-details.component';
 //Firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database'; 
@@ -17,6 +16,8 @@ import { ModalComponent } from './directives';
 import { ModalService } from './services';
 //Router
 import { AppRoutingModule } from './/app-routing.module';
+//FontAwesome icons
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,6 @@ import { AppRoutingModule } from './/app-routing.module';
     AllContactsListComponent,
     AddNewContactComponent,
     LoginComponent,
-    SingleContactDetailsComponent,
     ModalComponent
   ],
   imports: [
@@ -33,7 +33,8 @@ import { AppRoutingModule } from './/app-routing.module';
     BrowserModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFontAwesomeModule
   ],
   providers: [ModalService],
   bootstrap: [AppComponent]

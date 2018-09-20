@@ -1,41 +1,65 @@
-<header class="c-nav-block c-as-header">
+<header class="c-nav-block c-as-header bg-primary">
   <div class="c-container">
-    <div class="c-view-title">List of all contacts</div>
+    <div class="c-view-title"><b>List of all contacts</b></div>
   </div>
 </header>
 <main class="c-container c-main-container">
-  <div class="card" class="c-contacts-list-item" *ngFor="let singleContact of listOfAllContacts | async">
-    <div class="card-body">
-      {{singleContact.lastName}} {{singleContact.firstName}}
-      <button class="btn btn-danger" (click)="openContactDeleteModal(singleContact)">Remove</button>
-      <button class="btn btn-primary" (click)="openContactDetailsModal(singleContact)">Edit</button>
+  <div *ngIf="listOfAllContacts; else noContacts">
+    <div *ngFor="let singleContact of listOfAllContacts | async" class="c-single-contact-list-card card border border-primary mb-1">
+      <div class="card-body pt-2 pb-2 pl-3 pr-3">
+        <table>
+          <tbody>
+            <tr>
+              <td><b *ngIf="singleContact.firstName">{{singleContact.firstName}}</b><b *ngIf="singleContact.lastName">&nbsp;{{singleContact.lastName}}</b><span
+                  class="text-muted c-has-phone-number" *ngIf="singleContact.phone"><span class="c-v-divider">|</span> {{singleContact.phone}}</span></td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-outline-primary btn-sm" (click)="openContactDeleteModal(singleContact)"><fa
+                      name="trash"></fa></button>
+                  <button type="button" class="btn btn-outline-primary btn-sm" (click)="openContactDetailsModal(singleContact)"><fa
+                      name="user"></fa></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+  <!-- If there is no contacts to show -->
+  <ng-template #noContacts>
+    <div class="alert alert-info text-center p-3" role="alert">
+      <fa name="info-circle"></fa><b class="ml-1">Currently you don't have any contact saved!</b>
+    </div>
+  </ng-template>
 </main>
 <footer class="c-nav-block c-as-footer c-no-background">
   <div class="c-container">
-    <button class="c-footer-fab-button btn btn-primary" (click)="openAddNewContact()">Add</button>
+    <button class="c-footer-fab-button btn btn-primary btn-lg" (click)="openAddNewContact()"><fa name="plus"></fa></button>
   </div>
 </footer>
 <!-- Custom Contact Details modal -->
 <custom-modal id="cid-contact-details-modal" class="c-modal-container">
   <div class="c-custom-modal-wrapper">
-    <div class="c-nav-block c-as-header">
+    <div class="c-nav-block c-as-header bg-primary">
       <div class="c-container">
-        <div class="c-view-title">Contact Details</div>
+        <div class="c-view-title"><b>Contact Details</b></div>
       </div>
     </div>
     <div class="c-container c-main-container">
       <div class="card">
+        <div class="card-header">
+          <div>Name: <b *ngIf="formFirstName">{{formFirstName}}</b><b *ngIf="formLastName">, {{formLastName}}</b></div>
+        </div>
         <div class="card-body">
           <div class="row">
-            <div class="col">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" class="form-control" id="firstName" [(ngModel)]="formFirstName" placeholder="Enter name">
               </div>
             </div>
-            <div class="col">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="lastName">Last Name</label>
                 <input type="text" class="form-control" id="lastName" [(ngModel)]="formLastName" placeholder="Enter last name">
@@ -43,13 +67,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="emailAddress">Email address</label>
                 <input type="email" class="form-control" id="emailAddress" [(ngModel)]="formEmailAddress" placeholder="Enter email">
               </div>
             </div>
-            <div class="col">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <label for="phoneNumber">Phone number</label>
                 <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="formPhoneNumber" placeholder="Enter phone">
@@ -57,16 +81,19 @@
             </div>
           </div>
         </div>
+        <div class="card-footer">
+          <small class="form-text text-muted">You can edit contact information by changing values in form fields</small>
+        </div>
       </div>
     </div>
     <div class="c-nav-block c-as-footer">
       <div class="c-container">
         <div class="row">
           <div class="col">
-            <button class="btn btn-block btn-primary" (click)="saveContactChanges()">Save</button>
+            <button class="btn btn-block btn-success" (click)="saveContactChanges()">Save</button>
           </div>
           <div class="col">
-            <button class="btn btn-block btn-danger" (click)="cancelContactChanges()">Cancel</button>
+            <button class="btn btn-block btn-primary" (click)="cancelContactChanges()">Discard</button>
           </div>
         </div>
       </div>
@@ -75,33 +102,56 @@
 </custom-modal>
 <!-- Custom Delete Contact modal -->
 <custom-modal id="cid-contact-delete-modal" class="c-modal-container">
-    <div class="c-custom-modal-wrapper">
-      <div class="c-nav-block c-as-header">
-        <div class="c-container">
-          <div class="c-view-title">Delete Contact</div>
-        </div>
+  <div class="c-custom-modal-wrapper">
+    <div class="c-nav-block c-as-header bg-danger">
+      <div class="c-container">
+        <div class="c-view-title"><b>Delete Contact</b></div>
       </div>
-      <div class="c-container c-main-container">
-        <div class="card">
-          <div class="card-body">
-            <h1>Are you sure that you want to delete</h1>
-            <p>Contact:</p>
-            <p>First Name: {{selectedContactToDelete && selectedContactToDelete.firstName ? selectedContactToDelete.firstName : 'Unknown'}}</p>
-            <p>Last Name: {{selectedContactToDelete && selectedContactToDelete.lastName ? selectedContactToDelete.lastName : 'Unknown'}}</p>
+    </div>
+    <div class="c-container c-main-container">
+      <div class="card">
+        <div class="card-body">
+          <div class="alert alert-danger text-center p-3" role="alert">
+            <fa name="exclamation-triangle"></fa><b class="ml-1">Are you sure that you want to delete this contact!</b>
           </div>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td>First Name:</td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.firstName ? selectedContactToDelete.firstName:
+                    ''}}
+                  </b></td>
+              </tr>
+              <tr>
+                <td>Last Name</td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.lastName ? selectedContactToDelete.lastName:
+                    ''}}
+                  </b></td>
+              </tr>
+              <tr>
+                <td>Phone Number</td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.phone ? selectedContactToDelete.phone: ''}}</b></td>
+              </tr>
+              <tr>
+                <td>Email Address</td>
+                <td><b>{{selectedContactToDelete && selectedContactToDelete.email ? selectedContactToDelete.email: ''}}</b></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      <div class="c-nav-block c-as-footer">
-        <div class="c-container">
-          <div class="row">
-            <div class="col">
-              <button class="btn btn-block btn-primary" (click)="confirmContactDelete()">Save</button>
-            </div>
-            <div class="col">
-              <button class="btn btn-block btn-danger" (click)="cancelContactDelete()">Cancel</button>
-            </div>
+    </div>
+    <div class="c-nav-block c-as-footer">
+      <div class="c-container">
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-block btn-danger" (click)="confirmContactDelete()">Delete</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-primary" (click)="cancelContactDelete()">Cancel</button>
           </div>
         </div>
       </div>
     </div>
-  </custom-modal>
+  </div>
+</custom-modal>
