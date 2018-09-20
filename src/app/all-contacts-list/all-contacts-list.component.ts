@@ -88,6 +88,7 @@ export class AllContactsListComponent implements OnInit {
   }
   //Open Add new Contact view
   openAddNewContact() {
+    console.log('navigate to add new contact')
     this.router.navigate(['/add-new-contact']);
   }
 
