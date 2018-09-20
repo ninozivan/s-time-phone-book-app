@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AllContactsListComponent } from './all-contacts-list/all-contacts-list.component';
 import { AddNewContactComponent } from './add-new-contact/add-new-contact.component';
-import { LoginComponent } from './login/login.component';
 //Firebase
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database'; 
@@ -24,7 +23,6 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     AppComponent,
     AllContactsListComponent,
     AddNewContactComponent,
-    LoginComponent,
     ModalComponent
   ],
   imports: [
