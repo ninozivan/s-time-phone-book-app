@@ -78,7 +78,7 @@ body{
     position: relative;
     .mx-clear-fix();
     &.c-main-container{
-        padding: 70px 0 0;
+        padding: 70px 10px 20px;
     }
 }
 //Top header
@@ -93,11 +93,13 @@ body{
         top: 0;
         bottom: auto;
         z-index: @var-z-index-highest;
+        border-bottom: 1px solid fade(@color-black, 20%);
     }
     &.c-as-footer{
         top: auto;
         bottom: 0;
         z-index: @var-z-index-highest;
+        padding: 10px;
         &.c-no-background{
             background-color: fade(@color-white, 0%);
         }
@@ -106,19 +108,50 @@ body{
 .c-view-title{
     text-align: center;
     font-size: 16px;
-    color: @color-material-blue;
+    color: @color-white;
     padding: 20px 0;
 }
 ///List of all contacts
-.c-contacts-list-item{
-    margin-bottom: 5px;
-    position: relative;
-    > .mat-icon-button{
-        position: absolute;
-        right: 10px;
-        top: 14px;
-        left: auto;
-        bottom: auto;
+.c-single-contact-list-card{
+    -webkit-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.05);
+    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.05);
+    &:last-child{
+        margin-bottom: 100px !important;
+    }
+    > .card-body{
+        -webkit-transition: background-color 0.25s;
+        -moz-transition: background-color 0.25s;
+        -o-transition: background-color 0.25s;
+        transition: background-color 0.25s;        
+        &:hover{
+            background-color: lighten(@color-material-blue, 40%);
+        }
+        > table{
+            width: 100%;
+            > tbody{
+                > tr{
+                    > td{
+                        &:last-child{
+                            width: 1%;
+                        }
+                        .c-has-phone-number{
+                            display: block;
+                            .c-v-divider{
+                                display: none;                         
+                            }
+                            @media only screen and (min-width: @var-breakpoint-start-lg) {
+                                display: inline;
+                                .c-v-divider{
+                                    display: inline;
+                                    margin-left: 4px;          
+                                }
+                            }                              
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 .c-footer-fab-button{
@@ -126,12 +159,16 @@ body{
     left: auto !important;
     right: 10px !important;
     bottom: 30px !important;
+    /* Safari 3-4, iOS 1-3.2, Android 1.6- */
+    -webkit-border-radius: 50%; 
+    /* Firefox 1-3.6 */
+    -moz-border-radius: 50%;
+    /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
+    border-radius: 50%;
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.25);
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.25);    
 }
-.c-block-button{
-    width: 100% !important;
-}
-
-
 
 /* MODAL STYLES */
 .c-modal-container{
@@ -142,7 +179,7 @@ body{
         bottom: 0;
         right: 0;
         left: 0;
-        background-color: fade(@color-black, 80%);
+        background-color: @color-white;
         z-index: @var-z-index-modals;
     }
 }
@@ -150,48 +187,3 @@ body.modal-open {
     /* body overflow is hidden to hide main scrollbar when modal window is open */
     overflow: hidden;
 }
-custom-modal {
-    /* modals are hidden by default */
-    // display: none;
-
-    // .modal {
-    //     /* modal container fixed across whole screen */
-    //     position: fixed;
-    //     top: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     left: 0;
-
-    //     /* z-index must be higher than .modal-background */
-    //     z-index: @var-z-index-modals;
-        
-    //     /* enables scrolling for tall modals */
-    //     overflow: auto;
-
-    //     .modal-body {
-    //         padding: 20px;
-    //         background: #fff;
-
-    //         /* margin exposes part of the modal background */
-    //         margin: 40px;
-    //     }
-    // }
-
-    // .modal-background {
-    //     /* modal background fixed across whole screen */
-    //     position: fixed;
-    //     top: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     left: 0;
-
-    //     /* semi-transparent black  */
-    //     background-color: #000;
-    //     opacity: 0.75;
-        
-    //     /* z-index must be below .modal and above everything else  */
-    //     z-index: @var-z-index-modals - 10;
-    // }
-}
-
-
